@@ -1,0 +1,23 @@
+MARKET-CY ACCOUNTING — MASHSCANNER APP PATCH
+
+1. Κάνε backup τον φάκελο του MashScanner.
+2. Βάλε τα περιεχόμενα αυτού του ZIP στον κεντρικό φάκελο του project.
+3. Άνοιξε terminal στον κεντρικό φάκελο.
+4. Τρέξε:
+
+   node install_app_patch.js
+   npx expo install expo-document-picker
+   npx expo start -c
+
+Το installer:
+- δημιουργεί αυτόματο backup του app/index.js, package.json και υπάρχοντος accounting.js,
+- προσθέτει το κουμπί «Λογιστήριο» στην αρχική οθόνη και στο drawer,
+- προσθέτει το route app/accounting.js,
+- δεν πειράζει scanner, barcode, orders, returns ή product flows.
+
+API:
+https://market-cy.com/accounting/index.php
+
+Εταιρεία:
+MASH TRADING & DISTRIBUTION LTD
+VAT: CY60300156R

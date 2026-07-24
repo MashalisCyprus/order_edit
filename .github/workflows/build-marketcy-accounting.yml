@@ -1,0 +1,52 @@
+name: Build Market-CY Accounting ZIPs
+
+on:
+  push:
+    paths:
+      - 'build_src/**'
+      - '.github/workflows/build-marketcy-accounting.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf dist work
+          mkdir -p dist work/app work/server
+          APP_KEY="$(openssl rand -hex 32)"
+
+          cp -a build_src/app/. work/app/
+          cp -a build_src/server/. work/server/
+
+          sed -i "s/__APP_KEY__/${APP_KEY}/g" work/app/app/accounting.js
+          sed -i "s/__APP_KEY__/${APP_KEY}/g" work/server/config.php
+
+          php -l work/server/index.php
+          php -l work/server/bootstrap.php
+          php -l work/server/config.php
+          php -l work/server/install.php
+          node --check work/app/install_app_patch.js
+
+          printf '%s\n' '' > work/server/openai.key
+          chmod 600 work/server/openai.key
+
+          (cd work/app && zip -qr ../../dist/MarketCY_MashScanner_Accounting_APP.zip .)
+          (cd work/server && zip -qr ../../dist/MarketCY_Accounting_SERVER.zip .)
+
+          sha256sum dist/*.zip > dist/SHA256SUMS.txt
+          unzip -t dist/MarketCY_MashScanner_Accounting_APP.zip
+          unzip -t dist/MarketCY_Accounting_SERVER.zip
+
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: MarketCY-Accounting-Packages
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 30

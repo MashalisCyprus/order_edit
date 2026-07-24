@@ -1,0 +1,33 @@
+MARKET-CY ACCOUNTING — SERVER INSTALL
+
+Target URL:
+https://market-cy.com/accounting/index.php
+
+Target path:
+/home/market/public_html/accounting/
+
+INSTALLATION
+1. Upload all contents of this ZIP inside:
+   /home/market/public_html/accounting/
+2. Open once:
+   https://market-cy.com/accounting/install.php
+3. The installer creates automatically:
+   - private/accounting.sqlite
+   - private/storage/
+   - private/backups/
+   - private/logs/
+   - all database tables and indexes
+4. Put the OpenAI API key inside:
+   /home/market/public_html/accounting/openai.key
+   The file must contain only the key.
+5. Open install.php again and press “Έλεγχος API”.
+
+IMPORTANT
+- This is a completely separate Market-CY database.
+- It does not read or change KOJO invoices, suppliers, PDFs, logs or database.
+- Do not upload a KOJO SQLite database into this folder.
+- After the final test, rename or delete install.php.
+
+Company:
+MASH TRADING & DISTRIBUTION LTD
+VAT: CY60300156R
